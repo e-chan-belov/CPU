@@ -1,36 +1,38 @@
 package org.example;
 
 public class CPU implements Handle {
-    protected Mem bus;
-    public CPU(Mem _bus) {
-        bus = _bus;
+    protected int[] reg;
+    protected int[] memory;
+    public CPU() {
+        reg = new int[] {0, 0, 0, 0};
+        memory = new int[2048];
     }
     private int print() {
-        System.out.printf("%d %d %d %d\n", bus.reg[0], bus.reg[1], bus.reg[2], bus.reg[3]);
+        System.out.printf("%d %d %d %d\n", reg[0], reg[1], reg[2], reg[3]);
         return 1;
     }
     private int ld(int m, int r) {
-        bus.reg[r] = bus.memory[m];
+        reg[r] = memory[m];
         return 1;
     }
     private int st(int r, int m) {
-        bus.memory[m] = bus.reg[r];
+        memory[m] = reg[r];
         return 1;
     }
     private int init(int r, int a) {
-        bus.reg[r] = a;
+        reg[r] = a;
         return 1;
     }
     private int mv(int r1, int r2) {
-        bus.reg[r2] = bus.reg[r1];
+        reg[r2] = reg[r1];
         return 1;
     }
     private int add() {
-        bus.reg[3] = bus.reg[0] + bus.reg[1];
+        reg[3] = reg[0] + reg[1];
         return 1;
     }
     private int sub() {
-        bus.reg[3] = bus.reg[0] - bus.reg[1];
+        reg[3] = reg[0] - reg[1];
         return 1;
     }
     private int mul() {
