@@ -1,6 +1,6 @@
 package org.example;
 
-public abstract class CPU implements Handle {
+public class CPU implements Handle {
     protected int[] reg;
     protected int[] memory;
     public CPU() {
