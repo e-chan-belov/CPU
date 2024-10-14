@@ -1,14 +1,14 @@
+import org.example.*;
 import org.example.Process;
-import org.example.Handle;
-import org.example.Factory;
-import org.example.Executer;
+
+import java.util.Map;
 
 public class App 
 {
     public static void main( String[] args )
     {
         Handle a = Factory.build();
-        Process[] test = {
+        Process[] test1 = {
         new Process("INIT", 0, 1),
         new Process("INIT", 1, 2),
         new Process("ADD"),
@@ -20,8 +20,8 @@ public class App
         new Process("MOVE", 2, 1),
         new Process("DIV"),
         new Process("SHOW")};
-
-
+        AlgoProg test = new AlgoProg(test1);
+        Executer.run(a, test);
 
         int num = 5;
         int power = 6;
@@ -33,7 +33,7 @@ public class App
         new Process("ST", 1, 1),
         new Process("ST", 3, 3),
         new Process("ST", 0, 2),
-        new Process("INIT", 2, 10),
+        new Process("INIT", 2, 9), // относительный адрес считается со следующей команды от джампа
         new Process("LD", 3, 0),
         new Process("LD", 1, 1),
         new Process("JGE"),
@@ -44,13 +44,22 @@ public class App
         new Process("LD", 3, 0),
         new Process("INC", 0),
         new Process("ST", 0, 3),
-        new Process("INIT", 0, -12),
+        new Process("INIT", 0, -13),
         new Process("JMP"),
         new Process("LD", 2, 0),
         new Process("LD", 1, 1),
         new Process("LD", 0, 2),
         new Process("SHOW")};
+        AlgoProg power_prog = new AlgoProg(pow);
+        Executer.run(a, power_prog);
 
-        Executer.run(a, pow);
+
+
+        power_prog.statistic().forEach((key, value) -> System.out.println(key + " " + value + " " + (float) value / power_prog.len()));
+
+
+        for (Map.Entry<String, Integer> entryObj : power_prog.maxStatistic()) {
+            System.out.println(entryObj.getKey() + " ==> " + entryObj.getValue());
+        }
     }
 }

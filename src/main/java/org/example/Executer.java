@@ -1,9 +1,12 @@
 package org.example;
 
+import java.util.Iterator;
+
 public class Executer {
-    static public void run(Handle cpu, Process[] prog) {
-        for (int i = 0; i < prog.length; ) {
-            i += cpu.exec(prog[i]);
+    static public void run(Handle cpu, AlgoProg prog) {
+        Iterator<Process> iter = prog.iterator();
+        while (iter.hasNext()) {
+            prog.setFlag(cpu.exec(iter.next()));
         }
     }
 }

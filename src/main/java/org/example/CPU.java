@@ -1,6 +1,6 @@
 package org.example;
 
-public class CPU implements Handle {
+public abstract class CPU implements Handle {
     protected int[] reg;
     protected int[] memory;
     public CPU() {
@@ -35,9 +35,7 @@ public class CPU implements Handle {
         reg[3] = reg[0] - reg[1];
         return 1;
     }
-    private int mul() {
-        return 1;
-    }
+    private int mul() {return 1;}
     public int exec(Process command) {
         switch(command.com) {
             case "LD":
