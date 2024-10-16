@@ -1,7 +1,7 @@
 import org.example.*;
 import org.example.Process;
 
-import java.util.Map;
+import java.util.Arrays;
 
 public class App 
 {
@@ -53,13 +53,9 @@ public class App
         AlgoProg power_prog = new AlgoProg(pow);
         Executer.run(a, power_prog);
 
-
-
         power_prog.statistic().forEach((key, value) -> System.out.println(key + " " + value + " " + (float) value / power_prog.len()));
-
-
-        for (Map.Entry<String, Integer> entryObj : power_prog.maxStatistic()) {
-            System.out.println(entryObj.getKey() + " ==> " + entryObj.getValue());
-        }
+        System.out.println(power_prog.maxStatistic());
+        System.out.println(Arrays.toString(power_prog.rangeOfMemory()));
+        System.out.println(power_prog.mostUsed());
     }
 }

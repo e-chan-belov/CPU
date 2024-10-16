@@ -58,7 +58,5 @@ public class CPU implements Handle {
                 return 1;
         }
     }
-
-
 }
 
