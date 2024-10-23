@@ -83,14 +83,16 @@ public class AlgoProg implements Iterable<Process> {
                 command->command.getName().equals("LD") || command.getName().equals("ST")
         ).toList();
         List<Entry<String, Integer>> mem = memCommands.stream().collect(
-                ()->new ArrayList<Entry<String, Integer>>(),
-                (list_, item) -> list_.add((item), // doesn't work
-
-
-        }));
-
+                ArrayList::new,
+                (list_, item) -> {
+                    if (item.com.equals("LD"))
+                        list_.add(Map.entry(item.com, item.reg[0]));
+                    else
+                        list_.add(Map.entry(item.com, item.reg[1]));
+                },
+                ArrayList::addAll
+        );
         mx = mem.stream().max((v1, v2)->Integer.compare(v1.getValue(), v2.getValue())).get().getValue();
-
         mn = mem.stream().min((v1, v2)->Integer.compare(v1.getValue(), v2.getValue())).get().getValue();
         return new int[] {mn, mx};
     }
