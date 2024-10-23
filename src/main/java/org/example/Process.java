@@ -16,4 +16,7 @@ public class Process
         com = a;
         reg = new int[] {0, 0};
     }
+    public String getName() {
+        return com;
+    }
 }

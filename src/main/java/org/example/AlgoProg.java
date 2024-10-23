@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class AlgoProg implements Iterable<Process> {
     ArrayList<Process> list;
@@ -55,26 +56,16 @@ public class AlgoProg implements Iterable<Process> {
         };
     }
 
-    public HashMap<String, Integer> statistic() {
-        HashMap<String, Integer> temp = new HashMap<>();
-        for (Process instruction : this) {
-            String t = instruction.com;
-            if (temp.containsKey(t)) {
-                temp.put(t, temp.get(t) + 1);
-            }
-            else {
-                temp.put(t, 1);
-            }
-        }
-        return temp;
+    public Map<String, Long> statistic() {
+        return list.stream().collect(Collectors.groupingBy(Process::getName, Collectors.counting()));
     }
-    public ArrayList<Entry<String, Integer>> maxStatistic() {
-        Comparator<Entry<String, Integer>> valueComparator = (e1, e2) -> {
-            Integer v2 = e1.getValue();
-            Integer v1 = e2.getValue();
+    public ArrayList<Entry<String, Long>> maxStatistic() {
+        Comparator<Entry<String, Long>> valueComparator = (e1, e2) -> {
+            Long v2 = e1.getValue();
+            Long v1 = e2.getValue();
             return v1.compareTo(v2);
         };
-        ArrayList<Entry<String, Integer>> temp = new ArrayList<>(statistic().entrySet());
+        ArrayList<Entry<String, Long>> temp = new ArrayList<>(statistic().entrySet());
         temp.sort(valueComparator);
         return temp;
     }
@@ -82,21 +73,25 @@ public class AlgoProg implements Iterable<Process> {
         return maxStatistic().get(0).getKey();
     }
     public int[] rangeOfMemory() {
-        int mn = 2048, mx = 0, obj = 0;
-        for (Process command : this) {
-            if (Objects.equals(command.com, "LD")) {
-                obj = command.reg[0];
+        int mn = 2048, mx = 0;
+        Comparator<Entry<String, Long>> valueComparator = (e1, e2) -> {
+            Long v2 = e1.getValue();
+            Long v1 = e2.getValue();
+            return v1.compareTo(v2);
+        };
+        List<Process> memCommands = list.stream().filter(
+                command->command.getName().equals("LD") || command.getName().equals("ST")
+        ).toList();
+        List<Entry<String, Integer>> mem = memCommands.stream().collect(
+                ()->new ArrayList<Entry<String, Integer>>(),
+                (list_, item) -> list_.add((item), // doesn't work
 
-            }
-            else if (Objects.equals(command.com, "ST")) {
-                obj = command.reg[1];
-            }
-            else {
-                continue;
-            }
-            mn = Math.min(obj, mn);
-            mx = Math.max(obj, mx);
-        }
+
+        }));
+
+        mx = mem.stream().max((v1, v2)->Integer.compare(v1.getValue(), v2.getValue())).get().getValue();
+
+        mn = mem.stream().min((v1, v2)->Integer.compare(v1.getValue(), v2.getValue())).get().getValue();
         return new int[] {mn, mx};
     }
 }
